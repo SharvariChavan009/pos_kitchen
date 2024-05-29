@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isExpanded: true,
       iconSize: 30.0,
       style: TextStyle(color: Colors.blue),
-      items: ['Placed', 'Two', 'Three'].map(
+      items: ['Placed', 'Preparing', 'Ready'].map(
         (val) {
           return DropdownMenuItem<String>(
             value: val,

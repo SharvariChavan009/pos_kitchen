@@ -87,6 +87,7 @@ class CustomTextField extends StatelessWidget {
         obscuringCharacter: '*',
         onChanged: onChanged,
         onSubmitted: onSubmitted,
+        
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius ?? 10.0),
@@ -135,7 +136,7 @@ class CustomTextField extends StatelessWidget {
         textInputAction: textInputAction,
         style: const TextStyle(
             fontFamily: CustomLabels.primaryFont,
-            color: AppColors.whiteColor,
+            color: AppColors.newTextColor,
             fontSize: 14),
         controller: controller,
         obscuringCharacter: '*',
@@ -145,7 +146,7 @@ class CustomTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle: const TextStyle(
               fontFamily: CustomLabels.primaryFont,
-              color: AppColors.iconColor,
+              color: AppColors.newTextColor,
               fontSize: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),

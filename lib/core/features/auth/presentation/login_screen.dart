@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:kitchen_task/core/common/c_text_field.dart';
 import 'package:kitchen_task/core/common/colors.dart';
 import 'package:kitchen_task/core/common/common_messages.dart';
@@ -10,6 +11,7 @@ import 'package:kitchen_task/core/features/auth/cubits/email/email_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/password/login_cubit.dart';
 import 'package:kitchen_task/screens/home/home_screen.dart';
 
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -18,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   @override
   Widget build(BuildContext context) {
     // -----------------------------------------

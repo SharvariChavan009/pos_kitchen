@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:equatable/equatable.dart';
+
 
 part 'email_state.dart';
 

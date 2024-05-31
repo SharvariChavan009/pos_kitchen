@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kitchen_task/core/common/colors.dart';
+import 'package:kitchen_task/core/common/common_messages.dart';
+import 'package:kitchen_task/core/common/overlay.dart';
+import 'package:kitchen_task/screens/home/cubits/get_data/get_data_cubit.dart';
+import 'package:kitchen_task/screens/home/model/order_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,16 +18,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 // ------------------------------
-  List<String> items = ["Placed", "Preparing", "Ready"];
+  List<String> selectedItemValue = []; // Placed
+  List<String> selectedItemValue1 = []; // Preparing
 
-  List<String> selectedValuesPlaced = [];
-  List<String> selectedValuesPrepare = [];
+  List<DropdownMenuItem<String>> _dropDownItem() {
+    List<String> itemValue = ["Placed", "Preparing", "Ready"];
+
+    return itemValue
+        .map((value) => DropdownMenuItem(
+              value: value,
+              child: Text(value),
+            ))
+        .toList();
+  }
 
 //-------------------------------
   @override
   Widget build(BuildContext context) {
-    // ------------------------------
-
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     print("Screen Height: $screenHeight");
@@ -56,154 +70,192 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           //------------- Container 1 ---------------
           Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Placed",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.28,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            color: AppColors.newCardBackgroundColor,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: AppColors.newCardBackgroundColor,
-                                  borderRadius: BorderRadius.circular(15)),
-                              width: screenWidth * 0.30,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 5),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Order No: ",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                          ),
-                                          Text(
-                                            "#00026",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontSize: 18),
-                                          ),
-                                        ],
+            padding: const EdgeInsets.only(top: 10.0, left: 10, bottom: 10),
+            child: SizedBox(
+              width: screenWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Placed",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.28,
+                    child: BlocConsumer<GetDataCubit, GetDataState>(
+                      listener: (context, state) {
+                        if (state is GetAllDataErrorState) {
+                          return OverlayManager.showSnackbar(context,
+                              type: ContentType.failure,
+                              title: "Failed",
+                              message: CustomMessages.loginFailed);
+                        }
+                      },
+                      builder: (context, state) {
+                        print(state);
+
+                        if (state is GetAllDataLoadedState) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.data.length,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                for (int i = 0; i < 3; i++) {
+                                  selectedItemValue.add("Placed");
+                                }
+
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Card(
+                                    color: AppColors.newCardBackgroundColor,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color:
+                                              AppColors.newCardBackgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      width: screenWidth * 0.30,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Order No: ",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                  ),
+                                                  Text(
+                                                    "#00026",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                        fontSize: 18),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 15.0, bottom: 5),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Table No: ",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .newTextColor,
+                                                        fontSize: 18),
+                                                  ),
+                                                  Text(
+                                                    "3",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .newTextColor,
+                                                        fontSize: 18),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Mango Shake",
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .newTextColor,
+                                                      fontSize: 18),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 7.0),
+                                                  child: Text(
+                                                    "1",
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .newTextColor,
+                                                        fontSize: 18),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 5.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.scolor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 2.0, right: 2),
+                                                  child: SizedBox(
+                                                    width: 300,
+                                                    child:
+                                                        DropdownButtonFormField(
+                                                      decoration: InputDecoration(
+                                                          enabledBorder:
+                                                              UnderlineInputBorder(
+                                                                  borderSide:
+                                                                      BorderSide(
+                                                                          color:
+                                                                              Colors.white))),
+                                                      dropdownColor:
+                                                          Colors.white,
+                                                      value: selectedItemValue[
+                                                          index],
+                                                      items: _dropDownItem(),
+                                                      onChanged: (value) {
+                                                        selectedItemValue[
+                                                            index] = value!;
+
+                                                        setState(() {
+                                                          print(
+                                                              '<< Placed Selected Index: ${index} and value: ${value} >>');
+                                                        });
+                                                      },
+                                                      // hint: Text('0'),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 15.0, bottom: 5),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Table No: ",
-                                            style: TextStyle(
-                                                color: AppColors.newTextColor,
-                                                fontSize: 18),
-                                          ),
-                                          Text(
-                                            "3",
-                                            style: TextStyle(
-                                                color: AppColors.newTextColor,
-                                                fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Mango Shake",
-                                          style: TextStyle(
-                                              color: AppColors.newTextColor,
-                                              fontSize: 18),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 7.0),
-                                          child: Text(
-                                            "1",
-                                            style: TextStyle(
-                                                color: AppColors.newTextColor,
-                                                fontSize: 18),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 5.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: AppColors.scolor,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 2.0, right: 2),
-                                          child:
-                                              DropdownButtonFormField<String>(
-                                            decoration: InputDecoration(
-                                                enabledBorder:
-                                                    UnderlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                            color:
-                                                                Colors.white))),
-                                            dropdownColor: Colors.white,
-                                            style: TextStyle(
-                                                color: AppColors.newTextColor,
-                                                fontSize: 18),
-                                            value: selectedValuesPlaced.length >
-                                                    index
-                                                ? selectedValuesPlaced[index]
-                                                : "Placed",
-                                            items: items.map((String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                            onChanged: (newValue) {
-                                              setState(() {
-                                                selectedValuesPlaced.length =
-                                                    index + 1;
-                                                selectedValuesPlaced[index] =
-                                                    newValue!;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              ],
+                                  ),
+                                );
+                              });
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -212,6 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 25.0),
             child: Container(
+              width: screenWidth,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [
@@ -228,13 +281,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   "Preparing",
-                    //   style: TextStyle(
-                    //       color: Colors.black,
-                    //       fontWeight: FontWeight.bold,
-                    //       fontSize: 20),
-                    // ),
                     SizedBox(
                       height: 30,
                       child: DefaultTextStyle(
@@ -253,14 +299,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(
                       height: screenHeight * 0.28,
                       child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: 5,
                           itemBuilder: (context, index) {
+                            for (int i = 0; i < 3; i++) {
+                              selectedItemValue1.add("Preparing");
+                            }
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Card(
@@ -355,41 +404,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 2.0, right: 2),
-                                              child: DropdownButtonFormField<
-                                                  String>(
-                                                decoration: InputDecoration(
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: Colors
-                                                                    .white))),
-                                                dropdownColor: Colors.white,
-                                                style: TextStyle(
-                                                    color:
-                                                        AppColors.newTextColor,
-                                                    fontSize: 18),
-                                                value: selectedValuesPrepare
-                                                            .length >
-                                                        index
-                                                    ? selectedValuesPrepare[
-                                                        index]
-                                                    : "Preparing",
-                                                items:
-                                                    items.map((String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (newValue) {
-                                                  setState(() {
-                                                    selectedValuesPlaced
-                                                        .length = index + 1;
-                                                    selectedValuesPlaced[
-                                                        index] = newValue!;
-                                                  });
-                                                },
+                                              child: SizedBox(
+                                                width: 300,
+                                                child: DropdownButtonFormField(
+                                                  decoration: InputDecoration(
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .white))),
+                                                  dropdownColor: Colors.white,
+                                                  value:
+                                                      selectedItemValue1[index],
+                                                  items: _dropDownItem(),
+                                                  onChanged: (value) {
+                                                    selectedItemValue1[index] =
+                                                        value!;
+
+                                                    setState(() {
+                                                      print(
+                                                          '<< Preparing Selected Index: ${index} and value: ${value} >>');
+                                                    });
+                                                  },
+                                                  // hint: Text('0'),
+                                                ),
                                               ),
                                             ),
                                           ),

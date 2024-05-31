@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-
-import 'package:kitchen_task/core/features/auth/cubits/password/login_cubit.dart';
+import 'package:hive/hive.dart';
+import 'package:kitchen_task/core/common/api_constants.dart';
+import 'package:kitchen_task/screens/home/common/common_list.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 part 'check_email_pass_state.dart';
@@ -28,12 +29,17 @@ class CheckEmailPassCubit extends Cubit<CheckEmailPassState> {
           compact: true,
         ));
 
-        var url = "http://localhost:8000/api/login";
-        Response response = await dio.post(url,
+        Response response = await dio.post(ApiConstants.apiLoginUrl,
             data: {"email": email, "password": pass, "device_name": "desktop"});
 
         if (response.statusCode == 200) {
-          print(response.statusCode);
+          utoken = response.data["data"]; // get authToken
+
+          // ------- Add AuthToken in Hive ----------
+          var authBox = await Hive.openBox("authBox");
+          authBox.put("authToken", utoken);
+          //-----------------------------------------
+
           emit(LoginSuccessfulState());
           email = "";
           pass = "";

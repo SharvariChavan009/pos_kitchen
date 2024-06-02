@@ -20,6 +20,9 @@ class ApiConstants {
   static const apiLoginUrl = "$apiBaseUrl/login";
   static const apiAllOrderUrl = "$apiOrderBaseUrl/show";
   static const apiAllOrderCheckStatusUrl = "$apiOrderBaseUrl/changeStatus";
+   static const apiProfileUrl = "$apiBaseUrl/profile";
+   static const apiLogoutUrl = "$apiBaseUrl/logout";
+
 
 
 }

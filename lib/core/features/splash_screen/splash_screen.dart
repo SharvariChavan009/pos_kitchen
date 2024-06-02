@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:kitchen_task/core/common/colors.dart';
 import 'package:kitchen_task/core/common/label.dart';
 import 'package:kitchen_task/core/features/auth/presentation/login_screen.dart';
 import 'package:kitchen_task/images/image.dart';
 import 'package:fade_out_particle/fade_out_particle.dart';
+import 'package:kitchen_task/screens/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,18 +18,54 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-    @override
-      void initState() {
-      super.initState();
-      Timer(
-          const Duration(seconds: 4),
-          () => Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const LoginScreen())));
-    }
+  bool isLogoVisible = true;
+
+  Future<void> checkLoginStatus() async {
+    var box = await Hive.openBox('authBox');
+
+    // header["Authorization"]="Bearer ${box.get("authToken")}";
+    Future.delayed(
+      const Duration(milliseconds: 300),
+      () {
+        setState(
+          () {
+            isLogoVisible = false;
+          },
+        );
+      },
+    );
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      try {
+        String? authToken = box.get("authToken");
+        print("authToken =$authToken");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => (box.get("authToken") == null)
+                    ? LoginScreen()
+                    : HomeScreen()),
+            (Route route) => false);
+      } catch (e) {
+        debugPrint('Error navigating to LoginScreen: $e');
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    checkLoginStatus();
+  }
+
+  Future<bool> isImageSets() {
+    return Future.delayed(
+      const Duration(seconds: 2),
+      () => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-  
-
     bool isLogoVisible = true;
 
     Widget getAnimationContainer({bool isImageSet = true}) {
@@ -44,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 duration: const Duration(seconds: 1),
                 top: isImageSet ? size.maxHeight : 20,
                 child: Image.asset(
-                  AppImage.logo1,
+                  "assets/image/Logo1.webp",
                   height: 300,
                   width: 500,
                   fit: BoxFit.fitWidth,

@@ -8,9 +8,9 @@ import 'package:kitchen_task/core/common/common_messages.dart';
 import 'package:kitchen_task/core/common/overlay.dart';
 import 'package:kitchen_task/core/features/auth/cubits/CheckEmailPassword/check_email_pass_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/email/email_cubit.dart';
+import 'package:kitchen_task/core/features/auth/cubits/get_user_details/get_user_details_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/password/login_cubit.dart';
 import 'package:kitchen_task/screens/home/home_screen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,7 +20,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   @override
   Widget build(BuildContext context) {
     // -----------------------------------------
@@ -50,6 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                   (Route route) => false);
+
+              BlocProvider.of<GetUserDetailsCubit>(context).getUserDetails();
             }
             if (state is LoginFailedfulState) {
               //------- Snackbar ------------

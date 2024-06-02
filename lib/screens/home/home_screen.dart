@@ -6,6 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kitchen_task/core/common/colors.dart';
 import 'package:kitchen_task/core/common/common_messages.dart';
 import 'package:kitchen_task/core/common/overlay.dart';
+import 'package:kitchen_task/core/features/auth/cubits/get_user_details/get_user_details_cubit.dart';
+import 'package:kitchen_task/core/features/auth/cubits/logout/logout_cubit.dart';
+import 'package:kitchen_task/core/features/auth/presentation/login_screen.dart';
 import 'package:kitchen_task/screens/home/common/common_list.dart';
 import 'package:kitchen_task/screens/home/cubits/check_status/check_status_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/fetch_preparedData/fetch_prepared_data_cubit.dart';
@@ -58,13 +61,88 @@ class _HomeScreenState extends State<HomeScreen> {
             fit: BoxFit.fill,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(
-              size: 30,
-              Icons.notifications,
-              color: Colors.black,
+            padding: EdgeInsets.only(right: 20.0, left: 10),
+            child: Row(
+              children: [
+                Icon(
+                  size: 25,
+                  Icons.notifications,
+                  color: Colors.black,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 5.0, left: 10),
+                  child: BlocBuilder<GetUserDetailsCubit, GetUserDetailsState>(
+                    builder: (context, state) {
+                      if (state is GetUserDetailsSuccessState) {
+                        return Text(
+                          state.userName,
+                          style: TextStyle(color: AppColors.newTextColor),
+                        );
+                      }
+                      if (state is GetUserDetailsErrorState) {
+                        return Text(state.errorName);
+                      }
+                      return SizedBox();
+                    },
+                  ),
+                ),
+                BlocConsumer<LogoutCubit, LogoutState>(
+                  listener: (context, state) {
+                    if (state is LogoutSuccessState) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                          (Route route) => false);
+                    }
+                    if (state is LogoutErrorState) {
+                      print("Logout Failed.......");
+                    }
+                  },
+                  builder: (context, state) {
+                    return PopupMenuButton(
+                        position: PopupMenuPosition.under,
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                        color: AppColors.newCardBackgroundColor,
+                        itemBuilder: (context) => [
+                              PopupMenuItem(
+                                  onTap: () {},
+                                  textStyle: const TextStyle(
+                                    color: AppColors.newTextColor,
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      BlocProvider.of<LogoutCubit>(context)
+                                          .logout();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.logout,
+                                          color: AppColors.newTextColor,
+                                          size: 20,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Logout",
+                                          style: TextStyle(
+                                            color: AppColors.newTextColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ]);
+                  },
+                )
+              ],
             ),
           )
         ],
@@ -101,8 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (state is GetPlacedDataLoadedState) {
                         // print("order id${state.orderList[0].items?.length}");
                         return Container(
-                          color: Colors.red,
-                     height: screenHeight*0.28,
+                          // color: Colors.red,
+                          height: screenHeight * 0.28,
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: state.placedList.length,
@@ -231,7 +309,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       const EdgeInsets.only(
                                                           left: 2.0, right: 2),
                                                   child: SizedBox(
-                                                
                                                     child: BlocBuilder<
                                                         CheckStatusCubit,
                                                         CheckStatusState>(
@@ -497,7 +574,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             left: 2.0,
                                                             right: 2),
                                                     child: SizedBox(
-                                                 
                                                       child: BlocBuilder<
                                                           CheckStatusCubit,
                                                           CheckStatusState>(

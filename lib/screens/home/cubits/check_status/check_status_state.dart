@@ -4,19 +4,17 @@ part of 'check_status_cubit.dart';
 sealed class CheckStatusState {}
 
 final class CheckStatusInitial extends CheckStatusState {}
-
 final class CheckStatusPlacedState extends CheckStatusState {
-  List<OrderModel> pldata;
+  List<OrderModel> placedData;
 
-  CheckStatusPlacedState({required this.pldata});
+  CheckStatusPlacedState({required this.placedData});
 }
-
-final class CheckStatusPlacedErrorState extends CheckStatusState {}
 
 final class CheckStatusPreparedState extends CheckStatusState {
-  List<OrderModel> predata;
+  List<OrderModel> preparedData;
 
-  CheckStatusPreparedState({required this.predata});
+  CheckStatusPreparedState({required this.preparedData});
 }
-
-final class CheckStatusPreparedErrorState extends CheckStatusState {}
+final class CheckStatusErrordState extends CheckStatusState {
+  
+}

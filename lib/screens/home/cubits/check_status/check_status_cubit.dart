@@ -1,24 +1,49 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
+import 'package:kitchen_task/core/common/api_constants.dart';
+import 'package:kitchen_task/screens/home/common/common_list.dart';
 import 'package:kitchen_task/screens/home/model/order_model.dart';
 import 'package:meta/meta.dart';
 
 part 'check_status_state.dart';
 
 class CheckStatusCubit extends Cubit<CheckStatusState> {
-  CheckStatusCubit() : super(CheckStatusInitial()) {}
+  CheckStatusCubit() : super(CheckStatusInitial()) {
+    CheckStatusData();
+  }
 
   // Functions
 
-  void CheckData(String status, String id) async {
-    try {
-      var dio = Dio();
-      Response response = await dio.post("https://reqres.in/api/users", data: {
-        "name": status,
-        "job": id,
-      });
+  void CheckStatusData() async {
+    var box = await Hive.openBox("authBox");
+    String authVar = box.get("authToken");
 
-      if (response.statusCode == 200 || response.statusCode == 201) {}
-    } catch (e) {}
+    try {
+      var headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $authVar'
+      };
+      var data = json.encode({"status": status, "id": id});
+      var dio = Dio();
+      Response response = await dio.post(
+        ApiConstants.apiAllOrderCheckStatusUrl,
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
+
+
+      if (response.statusCode == 200) {
+        print(json.encode(response.data));
+      }
+    } catch (e) {
+      print("Error - CheckStatus");
+    }
   }
 }

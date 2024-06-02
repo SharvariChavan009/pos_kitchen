@@ -1,43 +1,26 @@
-// To parse this JSON data, do
-//
-//     final orderModel = orderModelFromJson(jsonString);
-
 import 'dart:convert';
 
-OrderModel orderModelFromJson(String str) => OrderModel.fromJson(json.decode(str));
+List<OrderModel> orderModelFromJson(String str) => List<OrderModel>.from(json.decode(str).map((x) => OrderModel.fromJson(x)));
 
-String orderModelToJson(OrderModel data) => json.encode(data.toJson());
+String orderModelToJson(List<OrderModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderModel {
-    List<Datum>? data;
-
-    OrderModel({
-        this.data,
-    });
-
-    factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
-        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    };
-}
-
-class Datum {
+    int? orderId;
     String? orderNo;
     String? status;
     int? tableNo;
     List<Item>? items;
 
-    Datum({
+    OrderModel({
+        this.orderId,
         this.orderNo,
         this.status,
         this.tableNo,
         this.items,
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+        orderId: json["order_id"],
         orderNo: json["order_no"],
         status: json["status"],
         tableNo: json["table_no"],
@@ -45,6 +28,7 @@ class Datum {
     );
 
     Map<String, dynamic> toJson() => {
+        "order_id": orderId,
         "order_no": orderNo,
         "status": status,
         "table_no": tableNo,

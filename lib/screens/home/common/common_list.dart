@@ -1,7 +1,12 @@
  import 'package:kitchen_task/screens/home/model/order_model.dart';
 
-List<OrderModel> allData = [];
-  List<OrderModel> placedData = [];
-  List<OrderModel> prepareData = [];
+List<OrderModel>allOrderData = [];
+  List<OrderModel> placedOrderData = [];
+  List<OrderModel> prepareOrderData = [];
+  List<OrderModel> readyOrderData = [];
+
 
   String? utoken;
+
+  String? status;
+  String? id;

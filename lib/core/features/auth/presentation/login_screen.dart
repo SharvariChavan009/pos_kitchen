@@ -79,10 +79,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 30,
                   ),
-                  const CircleAvatar(
-                    radius: 32, // Image radius
-                    backgroundImage: NetworkImage(
-                        'https://png.pngitem.com/pimgs/s/105-1050694_user-placeholder-image-png-transparent-png.png'),
+                  CircleAvatar(
+                    radius: 35,
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/image/quick.webp",
+                        fit: BoxFit.fill,
+                        width: 90,
+                        height: 90,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -185,6 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             child: CustomTextField(
                                               controller: loginpinController,
                                               obscureText: true,
+                                              inputType: CustomTextInputType.password ,
                                               hintText: "PIN",
                                             ),
                                           ),
@@ -349,6 +356,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                             onTap:
                                                                                 () {
                                                                               Navigator.pop(context, true);
+                                                                              loginemailController.clear();
                                                                             },
                                                                             child:
                                                                                 const Icon(

@@ -4,20 +4,18 @@ import 'package:hive/hive.dart';
 import 'package:kitchen_task/core/common/api_constants.dart';
 import 'package:kitchen_task/screens/home/common/common_list.dart';
 import 'package:kitchen_task/screens/home/model/order_model.dart';
+import 'package:meta/meta.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-part 'get_data_state.dart';
+part 'ready_data_state.dart';
 
-class GetDataCubit extends Cubit<GetDataState> {
-  GetDataCubit() : super(GetDataInitial()) {
-    fetchPlacedlData();
+class ReadyDataCubit extends Cubit<ReadyDataState> {
+  ReadyDataCubit() : super(ReadyDataInitial()) {
+    readyData();
   }
 
-  // Functions
   Dio dio = Dio();
-
-  // Fetch All Data
-  void fetchPlacedlData() async {
+  void readyData() async {
     var box = await Hive.openBox("authBox");
     String authVar = box.get("authToken");
 
@@ -39,17 +37,15 @@ class GetDataCubit extends Cubit<GetDataState> {
       );
       if (response.statusCode == 200) {
         final responseData = response.data['data'] as List;
-
-         allOrderData.clear();
+        allOrderData.clear();
         responseData.forEach((i) => allOrderData.add(OrderModel.fromJson(i)));
-
-        placedOrderData =
-            allOrderData.where((order) => order.status == "Placed").toList();
-        emit(GetPlacedDataLoadedState(placedList: placedOrderData));
-        print("<< User Token: $authVar >>");
+        readyOrderData =
+            allOrderData.where((order) => order.status == "Ready").toList();
+        print("Ready order count = ${prepareOrderData.length}");
+        emit(ReadyDataLoadedState(readyList: readyOrderData));
       }
     } catch (e) {
-      emit(GetAllDataErrorState());
+      emit(ReadyDataErrorState());
     }
   }
 }

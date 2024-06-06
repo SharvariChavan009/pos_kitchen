@@ -192,14 +192,14 @@ class CustomTextField extends StatelessWidget {
           }
         },
         onFieldSubmitted: onSubmitted,
-        // validator: (value){
-        //    if(validator!=null) {
-        //      validator!(value);
-        //    }
-        //
-        //   if(value=="")return "";
-        //   return null;
-        // },
+        validator: (value){
+           if(validator!=null) {
+             validator!(value);
+           }
+        
+          if(value=="")return "";
+          return null;
+        },
         scrollPhysics: scrollPhysics,
         cursorColor: cursorColor,
         scrollPadding: scrollPadding,

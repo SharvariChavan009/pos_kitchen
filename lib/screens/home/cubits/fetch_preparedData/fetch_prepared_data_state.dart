@@ -1,6 +1,5 @@
 part of 'fetch_prepared_data_cubit.dart';
 
-@immutable
 sealed class FetchPreparedDataState {}
 
 final class FetchPreparedDataInitial extends FetchPreparedDataState {}

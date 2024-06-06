@@ -12,6 +12,7 @@ import 'package:kitchen_task/screens/home/cubits/check_status/check_status_cubit
 import 'package:kitchen_task/screens/home/cubits/fetch_preparedData/fetch_prepared_data_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/get_data/get_data_cubit.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:kitchen_task/screens/home/cubits/ready_data/ready_data_cubit.dart';
 import 'package:kitchen_task/screens/home/home_screen.dart';
 
 void main() async {
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => FetchPreparedDataCubit()),
         BlocProvider(create: (context) => GetUserDetailsCubit()),
         BlocProvider(create: (context) => LogoutCubit()),
+        BlocProvider(create: (context) => ReadyDataCubit()),
+
 
 
 
@@ -47,7 +50,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SplashScreen(),
+        home: const HomeScreen(),
+        
       ),
     );
   }

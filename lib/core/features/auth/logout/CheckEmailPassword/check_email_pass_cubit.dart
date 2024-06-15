@@ -6,6 +6,8 @@ import 'package:kitchen_task/core/common/api_constants.dart';
 import 'package:kitchen_task/screens/home/common/common_list.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../../cubits/CheckEmailPassword/check_email_pass_cubit.dart';
+
 part 'check_email_pass_state.dart';
 
 class CheckEmailPassCubit extends Cubit<CheckEmailPassState> {

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kitchen_task/core/common/colors.dart';
 import 'package:kitchen_task/core/common/common_messages.dart';
+import 'package:kitchen_task/core/common/label.dart';
 import 'package:kitchen_task/core/common/overlay.dart';
+import 'package:kitchen_task/core/features/auth/cubits/change_language/change_language_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/get_user_details/get_user_details_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/logout/logout_cubit.dart';
 import 'package:kitchen_task/core/features/auth/presentation/login_screen.dart';
@@ -15,6 +17,10 @@ import 'package:kitchen_task/screens/home/cubits/fetch_preparedData/fetch_prepar
 
 import 'package:kitchen_task/screens/home/cubits/get_data/get_data_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/ready_data/ready_data_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
+enum Language { english, arabic }
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
 // !------------------------------
   List<String> selectedItemValue = []; // Placed
   List<String> selectedItemValue1 = []; // Preparing
+
+  String? selectedLanguage = "English";
 
   List<DropdownMenuItem<String>> _dropDownItem() {
     List<String> itemValue = ["Placed", "Preparing", "Ready"];
@@ -48,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
     print("Screen Width: $screenWidth");
 
     var ordernum;
+
+    var optionName = AppLocalizations.of(context);
 
 // !-------------------------------
 
@@ -146,6 +156,51 @@ class _HomeScreenState extends State<HomeScreen> {
                                     )),
                               ]);
                     },
+                  ),
+                  Text(
+                    selectedLanguage!,
+                    style: const TextStyle(
+                      color: AppColors.secondaryColor,
+                      fontSize: 14,
+                      fontFamily: CustomLabels.primaryFont,
+                    ),
+                  ),
+                  BlocBuilder<ChangeLanguageCubit, ChangeLanguageState>(
+                    builder: (context, state) {
+                      return PopupMenuButton(
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: AppColors.iconColor,
+                            size: 20,
+                          ),
+                          onSelected: (Language value) {
+                            // selectedLanguage = "$value";
+                            if (Language.english.name == value.name) {
+                              selectedLanguage = "English";
+                              BlocProvider.of<ChangeLanguageCubit>(context)
+                                  .ChangelanguageFunction(Locale('en'));
+
+                              print("Selected Language: ${value.name}");
+                            } else {
+                              selectedLanguage = "عربي";
+                              BlocProvider.of<ChangeLanguageCubit>(context)
+                                  .ChangelanguageFunction(Locale('ar'));
+
+                              print("Selected Language: ${value.name}");
+                            }
+                          },
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<Language>>[
+                                const PopupMenuItem(
+                                  value: Language.english,
+                                  child: Text('English'),
+                                ),
+                                const PopupMenuItem(
+                                  value: Language.arabic,
+                                  child: Text('arabic'),
+                                ),
+                              ]);
+                    },
                   )
                 ],
               ),
@@ -163,8 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Placed",
+                      Text(
+                        AppLocalizations.of(context)!.placed,
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -220,8 +275,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           bottom: 5),
                                                   child: Row(
                                                     children: [
-                                                      const AutoSizeText(
-                                                        "Order No: ",
+                                                      AutoSizeText(
+                                                        "${AppLocalizations.of(context)!.orderno}: ",
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontWeight:
@@ -246,8 +301,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    const AutoSizeText(
-                                                      "Table No: ",
+                                                    AutoSizeText(
+                                                      "${AppLocalizations.of(context)!.tableno}: ",
                                                       style: TextStyle(
                                                           color: AppColors
                                                               .newTextColor,
@@ -314,8 +369,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         children: [
                                                           GestureDetector(
                                                             child:
-                                                                const AutoSizeText(
-                                                              "View More ",
+                                                                 AutoSizeText(
+                                                              "${AppLocalizations.of(context)!.viewmore} ",
                                                               style: TextStyle(
                                                                   decoration:
                                                                       TextDecoration
@@ -387,8 +442,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                 child: Row(
                                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                                   children: [
-                                                                                    const Text(
-                                                                                      "Order No: ",
+                                                                                     Text(
+                                                                                      "${AppLocalizations.of(context)!.orderno}: ",
                                                                                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
                                                                                     ),
                                                                                     Text(
@@ -574,9 +629,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               repeatForever: true,
                               isRepeatingAnimation: true,
                               animatedTexts: [
-                                TypewriterAnimatedText('Preparing.'),
-                                TypewriterAnimatedText('Preparing..'),
-                                TypewriterAnimatedText('Preparing...'),
+                                TypewriterAnimatedText(
+                                    "${AppLocalizations.of(context)!.preparing}."),
+                                TypewriterAnimatedText(
+                                    "${AppLocalizations.of(context)!.preparing}.."),
+                                TypewriterAnimatedText(
+                                    "${AppLocalizations.of(context)!.preparing}..."),
                               ],
                             ),
                           ),
@@ -635,8 +693,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             bottom: 5),
                                                     child: Row(
                                                       children: [
-                                                        const AutoSizeText(
-                                                          "Order No: ",
+                                                         AutoSizeText(
+                                                          "${AppLocalizations.of(context)!.orderno}: ",
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -672,8 +730,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             bottom: 5),
                                                     child: Row(
                                                       children: [
-                                                        const AutoSizeText(
-                                                          "Table No: ",
+                                                         AutoSizeText(
+                                                          "${AppLocalizations.of(context)!.tableno}: ",
                                                           style: TextStyle(
                                                               color: AppColors
                                                                   .newTextColor,
@@ -741,8 +799,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           children: [
                                                             GestureDetector(
                                                               child:
-                                                                  const AutoSizeText(
-                                                                "View More ",
+                                                                   AutoSizeText(
+                                                                "${AppLocalizations.of(context)!.viewmore} ",
                                                                 style: TextStyle(
                                                                     decoration:
                                                                         TextDecoration
@@ -809,8 +867,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                   child: Row(
                                                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                                                     children: [
-                                                                                      const Text(
-                                                                                        "Order No: ",
+                                                                                       Text(
+                                                                                        "${AppLocalizations.of(context)!.orderno}: ",
                                                                                         style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
                                                                                       ),
                                                                                       Text(

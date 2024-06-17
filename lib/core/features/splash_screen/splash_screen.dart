@@ -98,13 +98,22 @@ class _SplashScreenState extends State<SplashScreen> {
                   maxFontSize: 30,
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                    color: AppColors.whiteColor,
+                    color: Colors.black,
                     decorationColor: AppColors.whiteColor,
                     fontSize: 30,
                     fontWeight: CustomLabels.largeFontWeight,
                     fontFamily: CustomLabels.secondaryFont,
                   ),
                   maxLines: 1,
+                ),
+              ),
+              Positioned(
+              top: 250,
+                child: Image.asset(
+                  "assets/image/qd_logo.webp",
+                  height: 80,
+                  width: 200,
+                  fit: BoxFit.fill,
                 ),
               )
             ],
@@ -120,9 +129,10 @@ class _SplashScreenState extends State<SplashScreen> {
         height: double.infinity,
         width: double.infinity,
         decoration: const BoxDecoration(
+          // color: Colors.white
           image: DecorationImage(
             image: AssetImage(
-              AppImage.splash,
+              "assets/image/Desktop - 46.png",
             ),
             fit: BoxFit.cover,
           ),

@@ -18,7 +18,6 @@ import 'package:kitchen_task/screens/home/cubits/fetch_preparedData/fetch_prepar
 import 'package:kitchen_task/screens/home/cubits/get_data/get_data_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/ready_data/ready_data_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 enum Language { english, arabic }
 
@@ -46,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ))
         .toList();
   }
+
+
 
 // !-------------------------------
   @override
@@ -368,8 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .end,
                                                         children: [
                                                           GestureDetector(
-                                                            child:
-                                                                 AutoSizeText(
+                                                            child: AutoSizeText(
                                                               "${AppLocalizations.of(context)!.viewmore} ",
                                                               style: TextStyle(
                                                                   decoration:
@@ -442,7 +442,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                 child: Row(
                                                                                   mainAxisAlignment: MainAxisAlignment.start,
                                                                                   children: [
-                                                                                     Text(
+                                                                                    Text(
                                                                                       "${AppLocalizations.of(context)!.orderno}: ",
                                                                                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
                                                                                     ),
@@ -519,58 +519,65 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             CheckStatusState>(
                                                           builder:
                                                               (context, state) {
-                                                            return DropdownButtonFormField(
-                                                              decoration: const InputDecoration(
-                                                                  enabledBorder:
-                                                                      UnderlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(color: Colors.transparent))),
-                                                              dropdownColor:
-                                                                  Colors.white,
-                                                              value:
-                                                                  selectedItemValue[
-                                                                      index],
-                                                              items:
-                                                                  _dropDownItem(),
-                                                              onChanged:
-                                                                  (value) {
-                                                                status =
-                                                                    selectedItemValue[
-                                                                            index] =
-                                                                        value!;
+                                                            return
 
-                                                                id = orderdata
-                                                                    .orderId
-                                                                    .toString();
+                                                                 DropdownButtonFormField(
+                                                                  decoration: const InputDecoration(
+                                                                      enabledBorder:
+                                                                          UnderlineInputBorder(
+                                                                              borderSide:
+                                                                                  BorderSide(color: Colors.transparent))),
+                                                                  dropdownColor:
+                                                                      Colors.white,
+                                                                  value:
+                                                                      selectedItemValue[
+                                                                          index],
+                                                                  items:
+                                                                      _dropDownItem(),
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    status =
+                                                                        selectedItemValue[
+                                                                                index] =
+                                                                            value!;
 
-                                                                BlocProvider.of<
-                                                                            CheckStatusCubit>(
-                                                                        context)
-                                                                    .CheckStatusData();
+                                                                    id = orderdata
+                                                                        .orderId
+                                                                        .toString();
 
-                                                                BlocProvider.of<
-                                                                            GetDataCubit>(
-                                                                        context)
-                                                                    .fetchPlacedlData();
+                                                                    BlocProvider.of<
+                                                                                CheckStatusCubit>(
+                                                                            context)
+                                                                        .CheckStatusData();
 
-                                                                BlocProvider.of<
-                                                                            FetchPreparedDataCubit>(
-                                                                        context)
-                                                                    .fetchPreparedlData();
+                                                                    BlocProvider.of<
+                                                                                GetDataCubit>(
+                                                                            context)
+                                                                        .fetchPlacedlData();
 
-                                                                BlocProvider.of<
-                                                                            ReadyDataCubit>(
-                                                                        context)
-                                                                    .readyData();
+                                                                    BlocProvider.of<
+                                                                                FetchPreparedDataCubit>(
+                                                                            context)
+                                                                        .fetchPreparedlData();
 
-                                                                setState(() {
-                                                                  print(
-                                                                      '<< Placed Selected Index: $index and value: $value >>');
-                                                                });
-                                                              },
-                                                              onTap: () {},
-                                                              // hint: Text('0'),
-                                                            );
+                                                                    BlocProvider.of<
+                                                                                ReadyDataCubit>(
+                                                                            context)
+                                                                        .readyData();
+
+                                                                    setState(() {
+                                                                      print(
+                                                                          '<< Placed Selected Index: $index and value: $value >>');
+                                                                    });
+                                                                  },
+                                                                  onTap: () {},
+                                                                  // hint: Text('0'),
+                                                                );
+
+       
+
+
+                                                            
                                                           },
                                                         ),
                                                       ),
@@ -693,7 +700,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             bottom: 5),
                                                     child: Row(
                                                       children: [
-                                                         AutoSizeText(
+                                                        AutoSizeText(
                                                           "${AppLocalizations.of(context)!.orderno}: ",
                                                           style: TextStyle(
                                                               color:
@@ -730,7 +737,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             bottom: 5),
                                                     child: Row(
                                                       children: [
-                                                         AutoSizeText(
+                                                        AutoSizeText(
                                                           "${AppLocalizations.of(context)!.tableno}: ",
                                                           style: TextStyle(
                                                               color: AppColors
@@ -799,7 +806,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           children: [
                                                             GestureDetector(
                                                               child:
-                                                                   AutoSizeText(
+                                                                  AutoSizeText(
                                                                 "${AppLocalizations.of(context)!.viewmore} ",
                                                                 style: TextStyle(
                                                                     decoration:
@@ -867,7 +874,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                   child: Row(
                                                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                                                     children: [
-                                                                                       Text(
+                                                                                      Text(
                                                                                         "${AppLocalizations.of(context)!.orderno}: ",
                                                                                         style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
                                                                                       ),

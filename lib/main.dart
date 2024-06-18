@@ -55,6 +55,8 @@ class MyApp extends StatelessWidget {
             //   home: const SplashScreen(),
 
             // ),
+
+            
             BlocBuilder<ChangeLanguageCubit, ChangeLanguageState>(
           builder: (context, state) {
             Locale? languageName;
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
             }
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'POS Applications',
+              title: 'Kitcen Applications',
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                 useMaterial3: true,

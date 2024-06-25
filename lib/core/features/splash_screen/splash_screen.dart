@@ -8,7 +8,7 @@ import 'package:kitchen_task/core/common/label.dart';
 import 'package:kitchen_task/core/features/auth/presentation/login_screen.dart';
 import 'package:kitchen_task/images/image.dart';
 import 'package:fade_out_particle/fade_out_particle.dart';
-import 'package:kitchen_task/screens/home/home_screen.dart';
+import 'package:kitchen_task/screens/home/order_list.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(
                 builder: (context) => (box.get("authToken") == null)
                     ? LoginScreen()
-                    : HomeScreen()),
+                    : OrderListScreen()),
             (Route route) => false);
       } catch (e) {
         debugPrint('Error navigating to LoginScreen: $e');
@@ -110,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Positioned(
               top: 250,
                 child: Image.asset(
-                  "assets/image/qd_logo.webp",
+                  "assets/image/qd_updated_logo.webp",
                   height: 80,
                   width: 200,
                   fit: BoxFit.fill,
@@ -132,7 +132,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // color: Colors.white
           image: DecorationImage(
             image: AssetImage(
-              "assets/image/Desktop - 46.png",
+              AppImage.splashScreen,
             ),
             fit: BoxFit.cover,
           ),

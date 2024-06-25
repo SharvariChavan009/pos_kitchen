@@ -12,13 +12,11 @@ import 'package:kitchen_task/core/features/auth/cubits/email/email_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/get_user_details/get_user_details_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/logout/logout_cubit.dart';
 import 'package:kitchen_task/core/features/auth/cubits/password/login_cubit.dart';
-import 'package:kitchen_task/core/features/auth/presentation/login_screen.dart';
 import 'package:kitchen_task/core/features/splash_screen/splash_screen.dart';
 import 'package:kitchen_task/screens/home/cubits/check_status/check_status_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/fetch_preparedData/fetch_prepared_data_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/get_data/get_data_cubit.dart';
 import 'package:kitchen_task/screens/home/cubits/ready_data/ready_data_cubit.dart';
-import 'package:kitchen_task/screens/home/home_screen.dart';
 
 void main() async {
   await Hive.initFlutter();

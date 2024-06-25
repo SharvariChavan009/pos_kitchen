@@ -3,6 +3,15 @@
  "preparing" : "Preparing",
  "orderno" : "Order No",
  "tableno" : "Table No",
- "viewmore" : "View More"
-
+ "viewmore" : "View More",
+ "orderItems" : "Order Items",
+ "ready" : "Ready",
+"preparing" : "Preparing",
+ "placed" : "Placed",
+ "login" : "Login",
+ "email" : "Email",
+ "pIN" : "PIN",
+ "resetYourPin" : "Reset Your Pin",
+ "sendOTP" : "Send OTP",
+ "forgotPIN" : "Forgot PIN ?"
 }
